@@ -222,3 +222,6 @@ scripts/snapshot_dumps/
 
 # Local magic-context working data
 .cortexkit/
+
+# Old skill directory
+.devin/

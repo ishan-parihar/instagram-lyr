@@ -270,7 +270,20 @@ print_mcp_configs() {
     echo ""
 }
 
-# ── 9. Print Next Steps ──────────────────────────────────
+# ── 9. Install AI Agent Skills ─────────────────────────────
+install_ai_skills() {
+    step "Installing AI agent skills"
+    mkdir -p ~/.agents/skills
+    
+    if [ -d "${REPO_DIR}/.agents/skills" ]; then
+        cp -r "${REPO_DIR}/.agents/skills"/* ~/.agents/skills/
+        success "AI agent skills installed to ~/.agents/skills/"
+    else
+        warn "No AI agent skills found in repository"
+    fi
+}
+
+# ── 10. Print Next Steps ──────────────────────────────────
 print_next_steps() {
     step "Next Steps"
 
@@ -310,6 +323,7 @@ main() {
     check_transcription_deps
     validate_installation
     check_instagram_session
+    install_ai_skills
     print_mcp_configs
     print_next_steps
 
