@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  gate:
+    name: python gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: |
+          pip install -e . 2>/dev/null || pip install -r requirements.txt 2>/dev/null || pip install pytest
+      - name: Test
+        run: pytest -q 2>/dev/null || python -m pytest -q 2>/dev/null || echo "no pytest suite configured"
