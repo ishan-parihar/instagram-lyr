@@ -13,7 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Run server locally: `uv run -m instagram_mcp_server --no-headless`
 - Run via uvx (PyPI/package verification only): `uvx instagram-lyr`
 - Docker build: `docker build -t instagram-lyr .`
-- Install browser: `uv run patchright install chromium`
+- Install browser: Obscura binary auto-managed — do NOT run `patchright install chromium` on constrained VPS environments. Obscura serves as the CDP backend; patchright/playwright are API-only (connectOverCDP).
 
 ## Scraping Rules
 
