@@ -4,6 +4,7 @@
 
 <p align="left">
   <a href="https://pypi.org/project/instagram-lyr/" target="_blank"><img src="https://img.shields.io/pypi/v/instagram-lyr?color=blue" alt="PyPI Version"></a>
+![LOC](https://img.shields.io/badge/LOC-21.0K-informational?style=flat-square)
   <a href="https://github.com/ishan-parihar/instagram-lyr/actions/workflows/ci.yml" target="_blank"><img src="https://github.com/ishan-parihar/instagram-lyr/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI Status"></a>
   <a href="https://github.com/ishan-parihar/instagram-lyr/actions/workflows/release.yml" target="_blank"><img src="https://github.com/ishan-parihar/instagram-lyr/actions/workflows/release.yml/badge.svg?branch=main" alt="Release"></a>
   <a href="https://github.com/ishan-parihar/instagram-lyr/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-MIT-%233fb950?labelColor=32383f" alt="License"></a>
@@ -419,3 +420,14 @@ This project is part of a family of agent-friendly CLI tools for social platform
 ## License
 
 MIT
+
+---
+
+## ☕ Support & Sponsorship
+
+If you find this project useful, consider supporting ongoing development:
+
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-ea4aaa?style=flat-square&logo=github)](https://github.com/sponsors/ishan-parihar)
+[![Donate](https://img.shields.io/badge/Donate-Razorpay-3395FF?style=flat-square)](https://rzp.io/rzp/ishan-parihar)
+
+Your support funds new features, releases, and infrastructure for the whole ecosystem.
