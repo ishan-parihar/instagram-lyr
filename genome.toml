@@ -37,3 +37,6 @@ never_commit = []          # globs `genome close` leaves out of the named-path c
 [records]
 prefix = ""                # e.g. "PQF" → PQF-AD-001
 mode = "immutable"         # or "amendable" (dated ## Amendment sections)
+
+[card]
+architecture = "docs/POSTING_MODULE_ARCHITECTURE.md"
