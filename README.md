@@ -1,5 +1,8 @@
 # Instagram HTTPX MCP Server
 
+
+- [Page index](docs/PAGE-INDEX.md) — every active doc and the question it owns.
+
 <!-- T2I HERO SPEC — Subject: an Instagram scraper engine — an Instagram phone frame on the left feeding posts/media/metadata through an anti-detection HTTPX pipeline into clean innerText + JSON for an AI agent; three browser-mode badges as satellites. Composition: left-to-right extraction, minimal UI cards. Palette: insta gradient (purple #833ab4 → pink #fd1d1d → amber #fcb045) on dark slate. Style: dark flat vector, gradient glow, no text. 16:9. -->
 
 <p align="left">
