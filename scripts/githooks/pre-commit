@@ -1,0 +1,13 @@
+#!/bin/sh
+# genome.toml `gate` made mechanical: a staging gate runs the repo's own
+# declared gate before the commit lands, so a red tree cannot be committed.
+# The full suite still runs separately; this hook only blocks red landings.
+# Path A: only .py changes matter, since the gate is `uv run pytest`.
+# plan-rust-craft C1, learned from mindstrata: the per-file check must use
+# `grep -q` per line (name-only output is newline-joined), never a `case`
+# match over the whole string, or a mixed staging skips every check.
+STAGED=$(git diff --cached --name-only --diff-filter=ACMR)
+printf '%s\n' "$STAGED" | grep -q '\.py$' || exit 0
+uv run pytest || {
+  echo "pre-commit: uv run pytest failed (gate in genome.toml)" >&2; exit 1; }
+exit 0
