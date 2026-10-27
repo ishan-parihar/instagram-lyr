@@ -4,7 +4,7 @@
 
 The Instagram MCP Server now supports managing multiple Instagram accounts with separate sessions and cookies. This is designed for AI agents that need to operate on behalf of multiple Instagram accounts during scheduled workflows.
 
-## Architecture
+## Multi-Account Architecture
 
 - **Account Storage**: Each account has its own profile directory under `~/.instagram-mcp/accounts/`
 - **Cookie Management**: Separate cookie files per account for independent authentication

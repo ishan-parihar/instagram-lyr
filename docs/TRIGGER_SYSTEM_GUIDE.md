@@ -4,7 +4,7 @@
 
 The Instagram MCP Server now includes a powerful comment-based DM automation system. This allows AI agents to set up automated direct message responses when users comment on specific posts with trigger words or phrases. Perfect for lead generation, customer engagement, and automated follow-ups.
 
-## How It Works
+## How the Trigger System Works
 
 1. **Setup**: Create a DM trigger for a specific post with trigger words
 2. **Monitoring**: When someone comments on the post, check if it matches the trigger

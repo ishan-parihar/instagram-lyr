@@ -440,7 +440,7 @@ If issues arise with new dependencies:
 **Frequency**: Monthly security updates
 **Testing**: Test each update in staging environment
 
-### Known Issues
+### Known Dependency Issues
 
 **Instagrapi Login Issues**: Instagram frequently changes login flow
 **Mitigation**: Use sessionid-based login, avoid password-based login

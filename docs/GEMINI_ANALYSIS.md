@@ -16,7 +16,7 @@ Gemini 2.0 Flash provides multimodal analysis of Instagram reels, understanding 
 
 ---
 
-## Tools
+## Analyzed Tool Set
 
 ### `analyze_reel_with_gemini`
 

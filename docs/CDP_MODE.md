@@ -8,7 +8,7 @@ CDP (Chrome DevTools Protocol) mode connects the MCP server directly to your run
 2. **Existing session** - Reuses your logged-in Instagram session
 3. **No automation flags** - No `navigator.webdriver` or other automation indicators
 
-## How It Works
+## How CDP Mode Works
 
 ```
 ┌─────────────────┐     CDP      ┌──────────────────┐

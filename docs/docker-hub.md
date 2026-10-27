@@ -15,7 +15,7 @@ A Model Context Protocol (MCP) server that connects AI assistants to Instagram. 
 - **Reel Transcription**: Download and transcribe reels (requires optional `caption` CLI)
 - **Reel Analysis**: Multimodal analysis with Gemini (`analyze_reel_with_gemini`)
 
-## Quick Start
+## Docker Hub Quick Start
 
 Create a browser profile locally, then mount it into Docker. You still need [uv](https://docs.astral.sh/uv/getting-started/installation/) installed on the host for the one-time `uvx instagram-lyr --login` step. Docker already includes its own Chromium runtime, so the managed Patchright Chromium browser download used by MCPB/`uvx` is not needed here.
 

@@ -16,7 +16,7 @@ The transcription tools download Instagram reels and convert spoken audio to tex
 
 ---
 
-## Tools
+## Transcription Tools
 
 ### `transcribe_user_reels`
 
@@ -97,7 +97,7 @@ Get subtitles for this reel: https://www.instagram.com/reel/C0AbCdEfGhI/
 
 ---
 
-## How It Works
+## How Transcription Works
 
 ```
 1. Fetch reels from Instagram (get_user_reels)
