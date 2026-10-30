@@ -89,16 +89,27 @@ def _text_latest(output: str, package: str) -> str | None:
         normalized_line = _normalize(line)
         if wanted not in normalized_line:
             continue
+        # Check for arrow/transition format first: X.Y.Z -> Y.Z or X.Y.Z → Y.Z
+        # This must be checked before the general "labeled" patterns below
+        transition = re.search(rf"{version}\s*(?:->|→)\s*{version}", line)
+        if transition:
+            # Return the "to" version (group 2), or the version after the arrow
+            return transition.group(2)
+        # Match all "labeled" format variants after arrow check:
+        # - [latest: vX.Y.Z] or [available: vX.Y.Z] (uv tool list --outdated)
+        # - latest: vX.Y.Z or latest=vX.Y.Z
+        # - available=X.Y.Z
         labeled = re.search(
-            rf"\b(?:latest|available)(?:\s+version)?\s*[:=]\s*{version}",
+            rf"\[latest:\s*{version}\]|\[available:\s*{version}\]"
+            rf"|latest:\s*{version}|available\s*=\s*{version}",
             line,
             re.IGNORECASE,
         )
         if labeled:
-            return labeled.group(1)
-        transition = re.search(rf"{version}\s*(?:->|→)\s*{version}", line)
-        if transition:
-            return transition.group(2)
+            # Extract version from the captured group; group(1) is the version number
+            m = re.search(rf"{version}", labeled.group(0))
+            if m:
+                return m.group(1)
     return None
 
 
@@ -144,6 +155,9 @@ def run_update(args: Sequence[str], *, application: str, package: str) -> int:
     )
     parser.add_argument("--json", action="store_true", help="print a JSON result")
     options = parser.parse_args(list(args))
+    # The refusal below is shared by every verb; report the action actually asked
+    # for so the JSON field is true rather than always claiming "check".
+    action = "check" if options.check else "update"
 
     try:
         distribution = importlib.metadata.distribution(package)
@@ -168,6 +182,7 @@ def run_update(args: Sequence[str], *, application: str, package: str) -> int:
             application,
             current,
             None,
+            action,
             "refused",
             reason or "Unknown install owner.",
         )
