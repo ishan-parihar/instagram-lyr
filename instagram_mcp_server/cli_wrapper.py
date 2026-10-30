@@ -5,6 +5,12 @@ import os
 
 def main() -> None:
     """Handle tool interception or delegate to MCP server mode."""
+    if len(sys.argv) > 1 and sys.argv[1] in {"update", "upgrade"}:
+        from instagram_mcp_server.updater import run_update
+
+        raise SystemExit(
+            run_update(sys.argv[2:], application="instagram-lyr", package="instagram-lyr")
+        )
     # ── Direct tool invocation: instagram-lyr <tool_name> [args...] ──────
     if len(sys.argv) > 1 and not sys.argv[1].startswith("-"):
         # Set environment variable early before any imports

@@ -680,6 +680,8 @@ def show_help() -> None:
     print("  instagram-lyr --install-hook     Install session hooks (Claude Code/Codex)")
     print("  instagram-lyr --install-skill    Install agent skill for auto-discovery")
     print("  instagram-lyr --json            Render tool results as JSON (default is TOON)")
+    print("  instagram-lyr update --check    Check for a package update")
+    print("  instagram-lyr update           Update through the owning package manager")
     print("  instagram-lyr --help             Show this help message")
     print()
     print("Session Integration:")
@@ -711,6 +713,12 @@ def exit_gracefully(exit_code: int = 0) -> None:
 
 def main() -> None:
     """Main application entry point."""
+    if raw_args and raw_args[0] in {"update", "upgrade"}:
+        from instagram_mcp_server.updater import run_update
+
+        raise SystemExit(
+            run_update(raw_args[1:], application="instagram-lyr", package="instagram-lyr")
+        )
     config = get_config()
 
     configure_logging(
