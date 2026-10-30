@@ -221,6 +221,7 @@ def run_update(args: Sequence[str], *, application: str, package: str) -> int:
             application,
             current,
             None,
+            action,
             "refused",
             "This install source cannot be upgraded safely in place; reinstall from the "
             "documented source.",

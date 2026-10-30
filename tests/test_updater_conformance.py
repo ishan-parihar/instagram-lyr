@@ -128,6 +128,20 @@ class _FakeDistribution:
         return version
 
 
+class _BrokenDirectUrlDistribution(_FakeDistribution):
+    """A distribution whose ``direct_url.json`` is not valid JSON.
+
+    Covers the other way ``_upgrade_command`` refuses: the helper parses that
+    file to decide whether an in-place pip upgrade is safe, and unparseable
+    content must refuse rather than fall through to a blind ``pip install``.
+    """
+
+    def read_text(self, filename: str) -> str | None:
+        if filename != "direct_url.json":
+            return None
+        return "{not valid json"
+
+
 def _uv_root(tmp_path: Path) -> Path:
     """A real -- and empty-by-default -- uv tool dir, so no real home install
     can ever be mistaken for a managed tool during a test."""
@@ -462,3 +476,57 @@ class TestRunUpdate:
         assert code == 0, "a clean upgrade must exit 0"
         assert payload["result"] == "updated", "the result must be 'updated'"
         assert payload["installed_version"] == "1.0.0" and payload["available_version"] == "2.0.0"
+
+    def _unsafe_source(self, monkeypatch, up, direct_url):
+        """A pip-owned install whose source the helper refuses to upgrade in place."""
+        monkeypatch.setattr(
+            up.importlib.metadata, "distribution",
+            lambda name: _FakeDistribution("/opt/tool", direct_url=direct_url, version="1.0.0"),
+        )
+        monkeypatch.setattr(up, "_manager", lambda d, p: ("pip-venv", None))
+
+    def _assert_refusal_is_truthful(self, payload, action):
+        """The refusal reason belongs in ``detail``; ``result`` stays a machine-readable value."""
+        assert payload["result"] == "refused", (
+            f"result must be the literal 'refused', not the prose: {payload.get('result')!r}"
+        )
+        assert payload["action"] == action, (
+            f"action must be the verb asked for ({action!r}), not 'refused': "
+            f"{payload.get('action')!r}"
+        )
+        assert "cannot be upgraded safely" in payload.get("detail", ""), (
+            f"the reason must land in detail: {payload.get('detail')!r}"
+        )
+
+    def test_malformed_direct_url_refusal_is_truthful_json(self, monkeypatch, tmp_path, capsys):
+        """Regression: a six-arg ``_emit`` put the prose in ``result`` and dropped ``detail``.
+
+        The second refusal site -- reached when ``_upgrade_command`` returns ``None``
+        for an unsafe pip source -- passed only six arguments, so ``'refused'`` landed
+        in ``action`` and the reason landed in ``result``. Consumers reading either
+        field got a sentence where they expected a token.
+        """
+        up = _updater()
+        self._strip_env(monkeypatch, tmp_path)
+        unsafe = {"url": "https://example.invalid/pkg", "vcs_info": None}
+        self._unsafe_source(monkeypatch, up, unsafe)
+        code = up.run_update(["--json"], application="sample-cli", package="sample-cli")
+        payload = json.loads(capsys.readouterr().out)
+        assert code == 1, "an unupgradable source must exit nonzero"
+        self._assert_refusal_is_truthful(payload, "update")
+
+    def test_unparseable_direct_url_refusal_is_truthful_json(self, monkeypatch, tmp_path, capsys):
+        """The same refusal, reached through the JSONDecodeError path."""
+        up = _updater()
+        self._strip_env(monkeypatch, tmp_path)
+        monkeypatch.setattr(
+            up.importlib.metadata, "distribution",
+            lambda name: _BrokenDirectUrlDistribution(
+                "/opt/tool", version="1.0.0"
+            ),
+        )
+        monkeypatch.setattr(up, "_manager", lambda d, p: ("pip-venv", None))
+        code = up.run_update(["--json"], application="sample-cli", package="sample-cli")
+        payload = json.loads(capsys.readouterr().out)
+        assert code == 1
+        self._assert_refusal_is_truthful(payload, "update")
